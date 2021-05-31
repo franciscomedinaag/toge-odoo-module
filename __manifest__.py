@@ -1,6 +1,6 @@
 {
     'name': 'Shopify odoo inventory synchronisation and product upload',
-    'version': '1.0',
+    'version': '31.05.2021',
     'summary': 'Synchronise sales and qty of product of odoo and shopify and uploaod you producs to shopify',
     'description': 'This module will synchronise the sale order creation of odoo and shopify as well as the qtys ajustments and '
                    'will add the feature of uploading the product and all '

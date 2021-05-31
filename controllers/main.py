@@ -169,7 +169,7 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
             if sales_team.exists(): 
                 sale_order.team_id = sales_team.id
             else:
-                _logger.info("Not found MDH Shopify on sales team (crm.team)")
+                _logger.info("Not found Shopify on sales team (crm.team)")
 
 
             sale_order.message_post(body=shopify_note)

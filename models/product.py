@@ -11,38 +11,39 @@ class ProductTemplate(models.Model):
 
     shopify_product_id = fields.Char()
 
-    def get_product_parent_tags(self):
-        res_categ = []
-        for categs in self.public_categ_ids:
-            res_categ.append(categs.display_name.split('/'))
-        if res_categ:
-            if len(res_categ) <= 1:
-                res_categ = res_categ[0]
+    # def get_product_parent_tags(self):
+    #     res_categ = []
+    #     for categs in self.public_categ_ids:
+    #         res_categ.append(categs.display_name.split('/'))
+    #     if res_categ:
+    #         if len(res_categ) <= 1:
+    #             res_categ = res_categ[0]
 
-        return res_categ
+    #     return res_categ
 
     def get_shopify_data_upload(self):
         _logger.info(_("Started getting data of the product %s") % self.name)
         variants = self.product_variant_ids
         product_image = ''
-        table_image = ''
+#        table_image = ''
         additional_images = []
         if self.image:
             product_image = self.image.decode('utf-8')
-        if self.x_studio_image_shopify:
-            table_image = self.x_studio_image_shopify.decode('utf-8')
+#        if self.x_studio_image_shopify:
+#            table_image = self.x_studio_image_shopify.decode('utf-8')
         for image_data in self.product_image_ids:
             additional_images.append( image_data.image.decode('utf-8') )
         shopify_data_post = {
             "title": self.name,
-            "vendor": self.marca_ids.mapped('display_name'),
+#            "vendor": self.marca_ids.mapped('display_name'),
             "shopify_product_id": self.shopify_product_id,
-            "description": self.website_description,
-            "tags": self.get_product_parent_tags(),
+            "description": self.description,
+#            "tags": self.get_product_parent_tags(),
+            "category":self.categ_id.display_name,
             "images": product_image,
-            "table_image": table_image,
+#            "table_image": table_image,
             "additional_images": additional_images,
-            "is_published": self.x_studio_website_shopify,
+#            "is_published": self.x_studio_website_shopify,
             "variants": [
                 {
                     "sku": variant.default_code,

@@ -74,11 +74,11 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
                      'phone': phone_customer
                     })
                 
-                ultimo_consumidor_tag = request.env['marvelfields.clasificaciones'].sudo().search([('name','=', 'Shopify UC')])
-                shopify_tag = request.env['marvelfields.subclases'].sudo().search([('name','=','Shopify')]) 
+                # ultimo_consumidor_tag = request.env['marvelfields.clasificaciones'].sudo().search([('name','=', 'Shopify UC')])
+                # shopify_tag = request.env['marvelfields.subclases'].sudo().search([('name','=','Shopify')]) 
                 
-                partner.clasificaciones_ids = [(4, ultimo_consumidor_tag.id)]
-                partner.subclases_ids = [(4, shopify_tag.id)]
+                # partner.clasificaciones_ids = [(4, ultimo_consumidor_tag.id)]
+                # partner.subclases_ids = [(4, shopify_tag.id)]
                 partner.ncliente = partner_shopify_id.get('id')
             
             # Custom code to be able to change the vat and address after the client has been already been registered
@@ -156,20 +156,18 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
                     'partner_shipping_id': shipping_address_odoo.id,
                     'order_line': order_line,
                     'portal': 'Shopify ' + data.get('name'),
-                    'x_studio_metodo_de_pago': data.get('gateway'),
-                    'x_studio_metodo_de_envio_shopify': shipping_title,
-                    'x_studio_comentarios': shopify_note,
-                    'x_studio_pago_con_gift_cards': it_was_gift_card,
+                    'metodo_de_pago': data.get('gateway'),
+                    'metodo_de_envio_shopify': shipping_title,
                     'shopify_sale_order_id': sale_order_id
                 }, )
             _logger.info("Confirming the created sale")
             
             # display_name 
-            sales_team = request.env['crm.team'].sudo().search([('name', '=', 'Shopify Bolder')])
-            if sales_team.exists(): 
-                sale_order.team_id = sales_team.id
-            else:
-                _logger.info("Not found Shopify on sales team (crm.team)")
+            # sales_team = request.env['crm.team'].sudo().search([('name', '=', 'Shopify Bolder')])
+            # if sales_team.exists(): 
+            #     sale_order.team_id = sales_team.id
+            # else:
+            #     _logger.info("Not found Shopify on sales team (crm.team)")
 
 
             sale_order.message_post(body=shopify_note)
@@ -178,20 +176,20 @@ class ShopifyOdooInventorySynchronisation(http.Controller):
                 sale_order.action_confirm()
             except Exception as e:
                 _logger.info("Error occurred while confirming the sale %s" % e)
+            # CONFIRMA ORDEN CUANDO ENTRA
+            picking_id = request.env['stock.picking'].sudo().search([('sale_id', '=', sale_order.id)], limit=1)
+            if picking_id:
+                _logger.info("Created stock picking of the created sale")
+                for move in picking_id.move_ids_without_package:
+                    move.quantity_done = move.product_uom_qty
+                try:
+                    _logger.info("Validating the stock picking")
+                    picking_id.button_validate()
 
-            # picking_id = request.env['stock.picking'].sudo().search([('sale_id', '=', sale_order.id)], limit=1)
-            # if picking_id:
-            #     _logger.info("Created stock picking of the created sale")
-            #     for move in picking_id.move_ids_without_package:
-            #         move.quantity_done = move.product_uom_qty
-            #     try:
-            #         _logger.info("Validating the stock picking")
-            #         picking_id.button_validate()
-
-            #     except Exception as e:
-            #         _logger.info("Error occurred while validating the move %s" % e)
-            # else:
-            #     _logger.info("No stock picking created for the sale")
+                except Exception as e:
+                    _logger.info("Error occurred while validating the move %s" % e)
+            else:
+                _logger.info("No stock picking created for the sale")
         except Exception as e:
             _logger.info("Error occurred while executing the logic %s" % e)
 

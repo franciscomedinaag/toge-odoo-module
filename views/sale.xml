@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="view_sale_order_inherit" model="ir.ui.view">
+            <field name="name">Shopify Order Id</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="shopify_sale_order_id" string="Id Venta"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sale_order_inherit" model="ir.ui.view">
+            <field name="name">Metodo de pago</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="metodo_de_pago" string="Metodo de pago"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_sale_order_inherit" model="ir.ui.view">
+            <field name="name">Metodo de envio</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="metodo_de_envio_shopify" string="Metodo de envio"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -8,7 +8,7 @@
             <field name="model">res.company</field>
             <field name="inherit_id" ref="base.view_company_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='nomenclature_id']" position="after">
+                <xpath expr="//field[@name='vat']" position="after">
                     <field name="shopify_post_url"/>
                 </xpath>
             </field>
@@ -19,7 +19,7 @@
             <field name="model">res.company</field>
             <field name="inherit_id" ref="base.view_company_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='nomenclature_id']" position="after">
+                <xpath expr="//field[@name='vat']" position="after">
                     <field name="shopify_product_upload_url"/>
                 </xpath>
             </field>

@@ -26,13 +26,10 @@ class ProductTemplate(models.Model):
         variants = self.product_variant_ids
         product_image = ''
 #        table_image = ''
-        additional_images = []
-        if self.image:
-            product_image = self.image.decode('utf-8')
+        if self.image_1024:
+            product_image = self.image_1024.decode('utf-8')
 #        if self.x_studio_image_shopify:
 #            table_image = self.x_studio_image_shopify.decode('utf-8')
-        for image_data in self.product_image_ids:
-            additional_images.append( image_data.image.decode('utf-8') )
         shopify_data_post = {
             "title": self.name,
 #            "vendor": self.marca_ids.mapped('display_name'),
@@ -42,7 +39,6 @@ class ProductTemplate(models.Model):
             "category":self.categ_id.display_name,
             "images": product_image,
 #            "table_image": table_image,
-            "additional_images": additional_images,
 #            "is_published": self.x_studio_website_shopify,
             "variants": [
                 {

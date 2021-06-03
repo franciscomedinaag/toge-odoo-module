@@ -5,7 +5,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 from odoo.tools.float_utils import float_is_zero
-from odoo.tools.pycompat import izip
+#from odoo.tools.pycompat import izip
 
 
 class StockMoveLineInheritShopifyOdooInventorySalesSynchronisation(models.Model):
@@ -37,7 +37,7 @@ class StockMoveLineInheritShopifyOdooInventorySalesSynchronisation(models.Model)
     def create(self, vals_list):
         """A function like create of the original in order to track the changing of done moves qty"""
         mls = super(StockMoveLineInheritShopifyOdooInventorySalesSynchronisation, self).create(vals_list)
-        for ml, vals in izip(mls, vals_list):
+        for ml, vals in zip(mls, vals_list):
             if ml:
                 if ml.state == 'done':
                     if ml.product_id.type == 'product':

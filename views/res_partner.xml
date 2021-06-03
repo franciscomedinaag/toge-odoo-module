@@ -2,12 +2,12 @@
 <odoo>
     <data>
         <!-- Inherit Form View to Modify it -->
-        <record id="res_partner_form_inherit_odoo_shopify_synchronisation" model="ir.ui.view">
-            <field name="name">res.partner.form.inherit.odoo.shopify.synchronisation</field>
+        <record id="res_partner_form_inherit" model="ir.ui.view">
+            <field name="name">Helium Custom Fields</field>
             <field name="model">res.partner</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='vat']" position="after">
-                    <field name="shopify_client_id"/>
+                    <field name="shopify_client_id" String="Shopify Id"/>
                 </xpath>
             </field>
         </record>

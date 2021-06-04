@@ -23,7 +23,7 @@ class ProductTemplate(models.Model):
 
     def get_shopify_data_upload(self):
         _logger.info(_("Started getting data of the product %s") % self.name)
-        variants = self.product_variant_ids
+        variants = self.attribute_line_ids
         product_image = ''
 #        table_image = ''
         if self.image_1024:
@@ -45,8 +45,7 @@ class ProductTemplate(models.Model):
                     "sku": variant.default_code,
                     "variant_data": [{variant_attribute.attribute_id.display_name: variant_attribute.name} for
                                      variant_attribute in
-                                     variant.attribute_value_ids],
-
+                                     variants],
                     "stock": variant.qty_available,
                     "sales_price": variant.list_price,
                     "barcode": variant.barcode,
